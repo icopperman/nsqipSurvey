@@ -1,0 +1,24 @@
+<form>
+    <div class="row mb-3">
+        <div class="col" style='background-color: red; color: white;'>
+          <h2 class='p-4' style='text-align: center;'> {{getString('Survey')}}</h2>
+        </div>
+      </div>
+
+  <div *ngFor="let page of Pages"  [style.display] = "currentPage == page.pageNumber ? 'block': 'none'"
+  [id]="page.pageNumber"  class="form-row">
+
+      <div *ngIf="page.pageType=='yesno'">
+        <pageYesNo   (action)="onAction($event)"
+        [Page]="page" [patientWithAnswers]="patientWithAnswers"></pageYesNo>
+      </div>
+
+      <div *ngIf="page.pageType.substring(0,4)=='text'">
+        <pageBoxes   (action)="onAction($event)"
+        [Page]="page" [patientWithAnswers]="patientWithAnswers"></pageBoxes>
+      </div>
+
+    </div>
+
+</form>
+

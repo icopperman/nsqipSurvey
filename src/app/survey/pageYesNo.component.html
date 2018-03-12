@@ -1,0 +1,27 @@
+<!-- <div [id]="pageNumber"> -->
+
+  <!-- <div class="row mb-3">
+    <div class="col" style='background-color: red; color: white;'>
+      <h2 class='p-4' style='text-align: center;'> {{getString('Survey')}}</h2>
+    </div>
+  </div> -->
+
+  <div *ngFor="let q of pageQuestions">
+
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <h4 class="mb-4">{{q.questionText}}</h4>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-8">
+        <button class="btn btn-success btn-lg btn-block" (click)="ans(q, 'yes')">{{getString("Yes")}}</button>
+        <button class="btn btn-danger btn-lg btn-block" (click)="ans(q, 'no')">{{getString("No")}}</button>
+        <button *ngIf="pageNumber != 1" class="btn btn-danger btn-lg btn-block" (click)="ans(q, 'back')">Back</button>
+      </div>
+    </div>
+
+  </div>
+
+<!-- </div> -->

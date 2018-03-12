@@ -1,0 +1,31 @@
+<div class="row mb-3">
+    <div class="col" style='background-color: red; color: white;'>
+      <h2 class='p-4' style='text-align: center;'>  {{getString("Thank you")}}</h2>
+    </div>
+  </div>
+<div>
+
+  <div class="row justify-content-center">
+  <div class="col-10">
+    <div [innerHTML]="confirmMessage"></div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col">
+      <button class="btn btn-danger btn-lg btn-block" (click)="back()" id="btnBack" >Back</button>
+    </div>
+  </div>
+
+  <div class="row fixed-bottom">
+      <div class="col">
+        <button class="btn btn-danger btn-lg btn-block" (click)="closeSurvey()" id="btnStart" >
+           {{getString("Close Survey")}}</button>
+      </div>
+    </div>
+
+
+
+
+
+  </div>

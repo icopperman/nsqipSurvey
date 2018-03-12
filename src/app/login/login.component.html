@@ -1,0 +1,54 @@
+<div class="row mb-3">
+  <div class="col-9" style='background-color: red; color: white;'>
+    <h2 class='p-4' style='text-align: center;'> {{welcomeMessage}}</h2>
+
+  </div>
+  <div class="col-3 p-2" style='background-color: red; color: white;'>
+     <input type="radio" value="en" name="lang" checked (click)="chgLanguage('en')"> English
+    <input type="radio" value="es" name="lang" (click)="chgLanguage('es')"> Spanish
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col text-center">
+    <div>
+      {{beginMsg}}
+
+    </div>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col text-center">
+    {{message}}
+  </div>
+</div>
+
+<div class="row justify-content-center no-gutters">
+
+  <div class="col-2"></div>
+
+  <div class="col">
+    <input class='w-50' [(ngModel)]="dobMonth" type="text" id="dobMonth" name="dobMonth" placeholder='MM'>
+  </div>
+
+  <div class="col">
+
+    <input class='w-50' [(ngModel)]="dobDay" type="text" id="dobDay" name="dobDay" placeholder='DD'>
+  </div>
+
+  <div class="col">
+
+    <input class='w-50' [(ngModel)]="dobYear" type="text" id="dobYear" name="dobYear" placeholder='YYYY'>
+  </div>
+
+  <div class="col-2"></div>
+
+</div>
+<br/> {{errorMsg}}
+
+<div class="row mt-4 fixed-bottom">
+  <div class="col">
+    <button class="btn btn-danger btn-lg btn-block" (click)="startSurvey()" id="btnStart"> {{startMsg}}</button>
+  </div>
+</div>
