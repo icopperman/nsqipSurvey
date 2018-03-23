@@ -1,15 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { question, nsqipPage, patient, pqs, answer, patientWithAnswers } from './nsqipQuestions';
+import { question, nsqipPage, patient, pqs, answer, patientWithAnswers, pqError } from './nsqipQuestions';
 import { of } from 'rxjs/observable/of'
-import { tap, catchError} from 'rxjs/operators'
+
+import { tap, catchError } from 'rxjs/operators'
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { unescapeIdentifier } from '@angular/compiler';
+
+// @Injectable()
+// export class AppLoadSvc {
+
+//   constructor(private http: HttpClient, private q: NsqipService) {}
+
+//   getURL() {
+
+
+//     let path = 'assets/url.json'
+//     let promise = this.http.get(path)
+//                   .toPromise()
+//                   .then(settings => {
+
+//                     this.q.xurl = settings.url;
+
+
+//                     console.log('here')
+//                     return settings
+//                   })
+//     return promise
+
+//   }
+// }
 
  @Injectable()
 export class NsqipService {
 
-         url = 'http://localhost:55474/nsqip';
+         url: string;// = 'http://localhost:55474/nsqip';
+         //url = 'https://myapps.uat.nyp.org/Nsqipsurveyapi/nsqip'
+
+         xurl: string;
+         path: string = null;
+         pathid: string = null
 
          savedQuestions         : question[]         = null;
          savedPages             : nsqipPage[]        = null;
@@ -20,9 +51,9 @@ export class NsqipService {
          aorc                   : string;
          language               : string;
          langNumber             : number;
-
          langDictionary =
                          {
+                           'Server error, please try later'                      : ['', 'Error del servidor, por favor intente más tarde'],
                            'Thank you'                                           : ['', 'Gracias'  ],
                            'Close Survey'                                        : ['','Encuesta Cercana'],
                            'Welcome'                                             : ['','Bienvenido'],
@@ -46,9 +77,13 @@ export class NsqipService {
 
   chgLanguage(lang: string) : void {
 
-    this.savedPQs.patient.patientLanguage                    = lang;
-    this.savedPQs.patientWithAnswers.patient.patientLanguage = lang;
-    this.language                                            = lang;
+    this.language = lang;
+
+    if ( ( this.savedPQs != null ) && (this.savedPQs.patient != null)) {
+
+      this.savedPQs.patient.patientLanguage                    = lang;
+      this.savedPQs.patientWithAnswers.patient.patientLanguage = lang;
+    }
 
   }
 
@@ -62,9 +97,16 @@ export class NsqipService {
 
     }
 
-    let aorc       = this.savedPQs.patient.patientType.toLowerCase().substring(0,1);
-    let aorcNumber = ( aorc          == 'a' ) ? 0 : 2;
+    let aorcNumber = 0;
     let langNumber = ( this.language == "en" ) ? 0: 1;
+
+    if ( ( this.savedPQs != null) && (this.savedPQs.patient != undefined)) {
+
+      let aorc       = this.savedPQs.patient.patientType.toLowerCase().substring(0,1);
+      aorcNumber = ( aorc          == 'a' ) ? 0 : 2;
+      langNumber = ( this.language == "en" ) ? 0: 1;
+
+    }
 
     //specific child messsages?
     if ( amsg.length == 2) {
@@ -82,7 +124,7 @@ export class NsqipService {
     return word;
   }
 
-  postAnswers(apatient: patientWithAnswers): Observable<patient> {
+  postAnswers(apatient: patientWithAnswers): Observable<patient | pqError> {
 
       const httpOptions = {headers: new HttpHeaders({ 'Content-Type':  'application/json' })};
 
@@ -95,7 +137,7 @@ export class NsqipService {
   }
 
 
-getQuestions(id: string) : Observable<pqs> {
+getQuestions(id: string) : Observable<pqs | pqError> {
 
       if ( this.savedPQs != null) {
 
@@ -123,10 +165,10 @@ getQuestions(id: string) : Observable<pqs> {
       return this.http.get<pqs>(x)
           .pipe(
 
-            catchError(this.handleError),
+            catchError(err => this.handleError(err)),
 
             tap(
-              data=> {
+              (data: pqs)=> {
 
                 this.savedQuestions = data.questions;
                 this.savedPages = data.pages;
@@ -176,25 +218,44 @@ getQuestions(id: string) : Observable<pqs> {
 
     }
 
-    private handleError(error: HttpErrorResponse) {
+    private handleError(aError: HttpErrorResponse) : Observable<pqError> {
 
-      if (error.error instanceof ErrorEvent) {
+      let theError = new pqError();
+      theError.httpError = aError;
 
+      if (aError.error instanceof ErrorEvent) {
+
+        theError.errType = 'client-side or network error'
+        theError.errType = aError.error.error
         // A client-side or network error occurred. Handle it accordingly.
-        console.error('An error occurred:', error.error.message);
+        console.log('An error occurred:', aError.error.error);
+
+        //return new ErrorObservable(theError)
 
       }
       else {
 
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong,
-        console.error(
-          `Backend returned code ${error.status}, ` +
-          `body was: ${error.error}`);
+        if (aError.error instanceof ProgressEvent) {
+          //occurs when backend is down
+            theError.errType = 'progess event error'
+            theError.errMsg = aError.message;
+        }
+        else {
+
+          theError.errType= 'backend returned bad response code : ' +aError.status
+          theError.errMsg = aError.statusText;
+
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.log(
+            `Backend returned code ${aError.status}, ` +
+            `body was: ${aError.statusText}`);
+          }
       }
+
       // return an ErrorObservable with a user-facing error message
-      return new ErrorObservable(
-        'Something bad happened; please try again later.');
+      return ErrorObservable.create(theError);
+              //  'Something bad happened; please try again later.'
     }
 
 }

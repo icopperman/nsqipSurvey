@@ -25,7 +25,7 @@ export class WelcomeComponent implements OnInit {
 
     let id = window.localStorage.getItem('id')
 
-    this.q.getQuestions(id).subscribe( pq => {
+    this.q.getQuestions(id).subscribe( ( pq: pqs) => {
 
           let aorc = pq.patient.patientType.toLowerCase();
 
@@ -112,20 +112,20 @@ export class WelcomeComponent implements OnInit {
 
     if (lang == "en") {
 
-      this.introMessage = ` On ${this.operationDate} your child had an operation at the ${this.hospitalName}.<br/><br/>
+      this.introMessage = ` On ${this.operationDate} your child had an operation at ${this.hospitalName}.<br/><br/>
                                  Dr. ${this.doctorName} and the Department of Pediatric Surgery, at our hospital, are members of the American College
                                  of Surgeons' National Surgical Quality Improvement Program. We are gathering information on the
-                                 outcomes of our patients after surgery. <br/><br/>Please take a few minutes to answer the questions below
-                                 and return this letter in the self-addressed stamped envelope. <br/><br/>Your answers are strictly <b>confidential</b>.
+                                 outcomes of our patients after surgery. <br/><br/>Please take a few minutes to answer the questions in this survey. <br/><br/>Your answers are strictly <b>confidential</b>.
                                  `;
       }
       else {
 
-        this.introMessage = ` translate to spanish: On ${this.operationDate} your child had an operation at the ${this.hospitalName}.<br/><br/>
-                                  Dr. ${this.doctorName} and the Department of Pediatric Surgery, at our hospital, are members of the American College
-                                  of Surgeons' National Surgical Quality Improvement Program. We are gathering information on the
-                                  outcomes of our patients after surgery. <br/><br/>Please take a few minutes to answer the questions below
-                                  and return this letter in the self-addressed stamped envelope. <br/><br/>Your answers are strictly <b>confidential</b>.
+        this.introMessage = `
+        El ${this.operationDate} su hijo tuvo una operación en ${this.hospitalName}. <br/><br/>
+        El ${this.doctorName} y el Departamento de Cirugía Pediátrica, en nuestro hospital, son miembros del Colegio Americano
+         of Surgeons' National Surgical Quality Improvement Programme. Estamos recopilando información sobre
+         resultados de nuestros pacientes después de la cirugía.<br/><br/>Tómese unos minutos para responder las preguntas de esta encuesta.
+         <br/><br/>Sus respuestas son <b>estrictamente</b> confidenciales.
                                   `;
       }
 

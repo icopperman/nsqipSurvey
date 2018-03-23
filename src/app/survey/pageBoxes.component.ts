@@ -17,6 +17,8 @@ export class BoxesComponent implements OnInit, AfterViewInit {
 
   pageNumber: number;
   pageQuestions: question[];
+  questionsEnglish : question[];
+  questionsSpanish : question[];
   answers: string[] = [];
 
   // form: FormGroup;
@@ -41,7 +43,13 @@ export class BoxesComponent implements OnInit, AfterViewInit {
     console.log("box init");
 
     this.pageNumber = this.Page.pageNumber;
-    this.pageQuestions = this.Page.pageQuestions;
+
+    this.questionsEnglish = Object.assign(this.Page.pageQuestions)
+    this.questionsSpanish = Object.assign(this.Page.pageQuestions);
+
+    this.questionsSpanish.map( (q: question) => q.questionText = q.questionTextSpanish )
+
+    this.pageQuestions = ( this.q.language == 'es') ? this.questionsSpanish : this.questionsEnglish
 
   }
 

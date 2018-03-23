@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 
 export class nsqipPage {
 
@@ -75,6 +76,14 @@ export class patient {
 
 }
 
+export class pqError {
+
+  errType: string;
+  errMsg: string;
+  httpError?: HttpErrorResponse;
+  //localError?: ErrorEvent;
+
+}
 // export class allData {
 
 //   questions: nsqipQuestions;

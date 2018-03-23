@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { NgModule } from "@angular/core";
+import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule, Routes } from "@angular/router";
 
@@ -14,8 +14,9 @@ import { BoxesComponent } from "./survey/pageBoxes.component";
 import { ConfirmComponent } from "./confirm/confirm.component";
 
 import { nsqipResolveQuestions } from "./resolver.service";
-import { NsqipService } from "./nsqip.service";
+import { NsqipService  } from "./nsqip.service";
 import { httpInterceptorProviders } from "./interceptorsBarrel";
+import { AppLoadSvc } from './appLoad.service';
 
 const appRoutes: Routes = [
 
@@ -26,9 +27,22 @@ const appRoutes: Routes = [
     resolve: { pqs: nsqipResolveQuestions  },
     data: { title: "Login" }
   },
-  { path: ":id",  redirectTo: "/login/:id",    pathMatch: "full"  }
+  { path: "login",  component: LoginComponent,
+  resolve: { pqs: nsqipResolveQuestions  },
+  data: { title: "Login" }
+},
+
+  { path: ":id",  redirectTo: "/login/:id",    pathMatch: "full"  },
+  { path: "",  redirectTo: "/login",    pathMatch: "full"  }
+
 //,{ path: '**', component: PageNotFoundComponent }
 ];
+
+export function getURL(appLoadSvc: AppLoadSvc) {
+
+  return () => appLoadSvc.getURL();
+
+}
 
 @NgModule({
   imports: [
@@ -41,6 +55,8 @@ const appRoutes: Routes = [
     )
   ],
   providers: [
+    AppLoadSvc,
+    { provide: APP_INITIALIZER, useFactory: getURL, multi: true, deps: [AppLoadSvc]},
     httpInterceptorProviders,
     nsqipResolveQuestions,
     NsqipService

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { NsqipService } from './nsqip.service';
 //import { nsqipQuestions, question, nsqipPage } from './nsqipQuestions';
-//import { Router, ActivatedRoute } from '@angular/router/';
+import { Router, ActivatedRoute } from '@angular/router/';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +15,12 @@ export class AppComponent implements OnInit {
   // adultQuestions: question[];
   // adultPages: nsqipPage[];
 
-  constructor(private q: NsqipService,   private location: Location  )
+  constructor(private q: NsqipService,   private location: Location, r: Router, a: ActivatedRoute  )
    {
 
       let path = this.location.path();
-      //q.saveType(path);
+
+      q.pathid = path.split('=')[1];
 
   }
 

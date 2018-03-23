@@ -90,25 +90,25 @@ getQuestions(): void {
 
   let id = window.localStorage.getItem('id')
   this.q.getQuestions(id)
-  .subscribe(pqs => {
+  .subscribe( (pqs: pqs) => {
 
     this.Pages = pqs.pages;
     this.patient = pqs.patient;
     this.patientWithAnswers = pqs.patientWithAnswers;
 
-    if ( this.patient.patientLanguage == 'es') {
+    // if ( this.patient.patientLanguage == 'es') {
 
-      this.Pages.forEach( p => {
+    //   this.Pages.forEach( p => {
 
-        p.pageQuestions.forEach( q => {
+    //     p.pageQuestions.forEach( q => {
 
-          q.questionText = q.questionTextSpanish
+    //       q.questionText = q.questionTextSpanish
 
-        });
+    //     });
 
-      });
+    //   });
 
-    }
+    // }
     //this.nsQuestions = questions;
     //this.adultQuestions = pqs.questions;
     //let z = questions.children;

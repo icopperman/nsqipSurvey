@@ -20,7 +20,7 @@ export class ConfirmComponent implements OnInit {
 
     let x    = this.q.getPatientWithAnswers();
     let lang = x.patient.patientLanguage;
-
+    if ( lang == null) lang = 'en'
     this.srcNameCredential = "sourceName and credentials"
     this.hospitalName      = x.patient.hospitalName;
     this.phoneNumber       = "111-111-1111"
@@ -41,10 +41,12 @@ export class ConfirmComponent implements OnInit {
     }
     else {
 
-      this.childMessage = `translate to spanish: Your child's health and your opinion are important to ${this.hospitalName}.
-                               Thank you for taking the time to complete this survey.<br/><br/>
+      this.childMessage = `
+      La salud de su hijo y su opinión son importantes para ${this.hospitalName}.
+             Gracias por tomarse el tiempo para completar esta encuesta.<br/><br/>
 
-                               Sincerely,<br/><br/>
+
+                               Sinceramente,<br/><br/>
                                ${this.srcNameCredential}<br/><br/>
                                Surgical Clinical Reviewer<br/><br/>
                                ${this.hospitalName}<br/><br/>
