@@ -8,30 +8,6 @@ import { tap, catchError } from 'rxjs/operators'
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { unescapeIdentifier } from '@angular/compiler';
 
-// @Injectable()
-// export class AppLoadSvc {
-
-//   constructor(private http: HttpClient, private q: NsqipService) {}
-
-//   getURL() {
-
-
-//     let path = 'assets/url.json'
-//     let promise = this.http.get(path)
-//                   .toPromise()
-//                   .then(settings => {
-
-//                     this.q.xurl = settings.url;
-
-
-//                     console.log('here')
-//                     return settings
-//                   })
-//     return promise
-
-//   }
-// }
-
  @Injectable()
 export class NsqipService {
 
@@ -51,21 +27,7 @@ export class NsqipService {
          aorc                   : string;
          language               : string;
          langNumber             : number;
-         langDictionary =
-                         {
-                           'Server error, please try later'                      : ['', 'Error del servidor, por favor intente más tarde'],
-                           'Thank you'                                           : ['', 'Gracias'  ],
-                           'Close Survey'                                        : ['','Encuesta Cercana'],
-                           'Welcome'                                             : ['','Bienvenido'],
-                           'Start Survey'                                        : ['','Empezar encuesta'],
-                           'Survey'                                              : ['','Encuesta'],
-                           'Next'                                                : ['','Siguiente'],
-                           'Yes'                                                 : ['','Si'],
-                           'No'                                                  : ['','No'],
-                           'Incorrect birth date'                                : ['', 'fecha de nacimiento incorrecta'],
-                           'dob'                                                 : ['Please enter your Date of Birth', 'Por favor, introduzca su fecha de nacimiento', 'Please enter the patient\'s Date of Birth', 'Por favor ingrese la fecha de nacimiento del paciente'],
-                           'Before we begin please help us verify your identity.': ['','Antes de comenzar, ayúdenos a verificar su identidad.'],
-                           };
+         langDictionary: { [key:string] : string[]}
 
   constructor(private http: HttpClient) { }
 
@@ -337,3 +299,57 @@ getQuestions(id: string) : Observable<pqs | pqError> {
   //   this.savedPages = null;
 
   // }
+           //  {
+                        //    'Month is required' : ['', 'Se requiere un mes'],
+                        //    'Too few digits for Month' : ['', 'Muy pocos dígitos para el mes'],
+                        //    'Too many digits for Month' : ['', 'Demasiados dígitos para el mes'],
+                        //    'Must be greater than 1' : ['', 'Debe ser mayor que 1'],
+                        //    'Range: 1-12' : ['', 'Distancia: 1-12'],
+                        //    'Day is required' : ['', 'El día es obligatorio'],
+                        //    'Too few digits for Day' : ['', 'Muy pocos dígitos para el día'],
+                        //    'Too many digits for Day' : ['', 'Demasiados dígitos para el día'],
+                        //    'Range: 1-31' : ['', 'Distancia: 1-31'],
+                        //    'Year is required' : ['', 'Se requiere un año'],
+                        //    'Too few digits for Year' : ['', 'Muy pocos dígitos por año'],
+                        //    'Too many digits for Year' : ['', 'Demasiados dígitos para el año'],
+                        //    'Year must be less than current year' : ['', 'El año debe ser menor que el año actual'],
+                        //    'Year must be greater than 1900' : ['', 'El año debe ser mayor que 1900'],
+
+                        //    'Server error, please try later'                      : ['', 'Error del servidor, por favor intente más tarde'],
+                        //    'Thank you'                                           : ['', 'Gracias'  ],
+                        //    'Close Survey'                                        : ['','Encuesta Cercana'],
+                        //    'Welcome'                                             : ['','Bienvenido'],
+                        //    'Start Survey'                                        : ['','Empezar encuesta'],
+                        //    'Survey'                                              : ['','Encuesta'],
+                        //    'Next'                                                : ['','Siguiente'],
+                        //    'Yes'                                                 : ['','Si'],
+                        //    'No'                                                  : ['','No'],
+                        //    'Incorrect birth date'                                : ['', 'fecha de nacimiento incorrecta'],
+                        //    'dob'                                                 : ['Please enter your Date of Birth', 'Por favor, introduzca su fecha de nacimiento', 'Please enter the patient\'s Date of Birth', 'Por favor ingrese la fecha de nacimiento del paciente'],
+                        //    'Before we begin please help us verify your identity.': ['','Antes de comenzar, ayúdenos a verificar su identidad.'],
+                        //    };
+
+
+                        // @Injectable()
+// export class AppLoadSvc {
+
+//   constructor(private http: HttpClient, private q: NsqipService) {}
+
+//   getURL() {
+
+
+//     let path = 'assets/url.json'
+//     let promise = this.http.get(path)
+//                   .toPromise()
+//                   .then(settings => {
+
+//                     this.q.xurl = settings.url;
+
+
+//                     console.log('here')
+//                     return settings
+//                   })
+//     return promise
+
+//   }
+// }

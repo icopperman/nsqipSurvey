@@ -64,7 +64,7 @@ export class WelcomeComponent implements OnInit {
 
   setAdultStrings(pq: pqs): void {
 
-    this.patientName = pq.patient.patientName;
+    this.patientName = pq.patient.patientName.split(',')[1];
     this.surgeryDate = pq.patient.surgeryDate;
     let lang = pq.patient.patientLanguage;
 
@@ -98,7 +98,7 @@ export class WelcomeComponent implements OnInit {
 
   setChildStrings(pq) {
 
-    this.patientName = `Parent/Guardian of ${pq.patient.patientName}`;
+    this.patientName = `Parent/Guardian of ${pq.patient.patientName.split(',')[1]}`;
     this.surgeryDate = pq.patient.surgeryDate;
     this.hospitalName = pq.patient.hospitalName;
     this.doctorName = pq.patient.surgeonName;

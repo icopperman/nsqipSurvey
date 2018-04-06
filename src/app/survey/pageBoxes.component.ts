@@ -44,8 +44,11 @@ export class BoxesComponent implements OnInit, AfterViewInit {
 
     this.pageNumber = this.Page.pageNumber;
 
-    this.questionsEnglish = Object.assign(this.Page.pageQuestions)
-    this.questionsSpanish = Object.assign(this.Page.pageQuestions);
+    //this.questionsEnglish = Object.assign({},this.Page.pageQuestions)
+    //this.questionsSpanish = Object.assign({},this.Page.pageQuestions);
+
+    this.questionsEnglish = JSON.parse(JSON.stringify(this.Page.pageQuestions))
+    this.questionsSpanish = JSON.parse(JSON.stringify(this.Page.pageQuestions))
 
     this.questionsSpanish.map( (q: question) => q.questionText = q.questionTextSpanish )
 
@@ -81,10 +84,13 @@ export class BoxesComponent implements OnInit, AfterViewInit {
     }
 
     if ( questionAnswer == 'back') {
+      this.action.emit(-1);
+    }
+    else {
+      this.action.emit(+nextPage);
 
     }
 
-    this.action.emit(+nextPage);
 
   }
 

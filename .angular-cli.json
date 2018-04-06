@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "angular.io-example"
+    "name": "nsqip-survey"
   },
   "apps": [
     {
@@ -10,7 +10,6 @@
       "assets": [
         "assets",
         "favicon.ico"
-
       ],
       "index": "index.html",
       "main": "main.ts",

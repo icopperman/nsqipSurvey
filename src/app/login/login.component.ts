@@ -45,22 +45,24 @@ export class LoginComponent implements OnInit, AfterViewInit {
     dobMonth : {
       required: 'Month is required',
       minlength: 'Too few digits for Month',
-      maxlength: 'Too mangy digits for Month',
-      max: 'out of range for month'
+      maxlength: 'Too many digits for Month',
+      min: 'Must be greater than 1',
+      max: 'Range: 1-12'
+
     },
     dobDay: {
       required: 'Day is required',
       minlength: 'Too few digits for Day',
       maxlength: 'Too many digits for Day',
-      max: 'out of range for day'
+      max: 'Range: 1-31'
 
     },
     dobYear: {
       required: 'Year is required',
       minlength: 'Too few digits for Year',
       maxlength: 'Too many digits for Year',
-      max: 'out of range for year',
-      min: 'year must be greated than 1900'
+      max: 'Year must be less than current year',
+      min: 'Year must be greater than 1900'
     }
 
   }
@@ -89,21 +91,33 @@ export class LoginComponent implements OnInit, AfterViewInit {
   setValidationMessage(cntl: string) : void {
 
     let c: AbstractControl = this.loginForm.get(cntl)
-      this.errorMsg = "";
 
- //     if ( ( c.touched || c.dirty ) && c.errors) {
-        if ( c.errors) {
+    this.errorMsg = "";
+    this.displayMessage[cntl] = ""
 
-          var x = this.validationMessages[cntl]
-          let y = Object.keys(c.errors).map( akey => {
+ //   if ( ( c.touched || c.dirty ) && c.errors) {
+      if ( c.errors) {
 
-          let amsg =  cntl + ( ( typeof x[akey] == 'undefined' ) ?  'err for ' + akey : x[akey] + ",")
+       var x = this.validationMessages[cntl]
 
-          this.errorMsg += amsg
-          this.displayMessage[cntl] = amsg
-          })
+       let y = Object.keys(c.errors).map( akey => {
+
+                   let amsg =  ( typeof x[akey] == 'undefined' ) ?  'err for ' + akey : x[akey]
+                   this.errorMsg += this.q.getString(amsg) + ","
+                   this.displayMessage[cntl] = this.q.getString(amsg)+ ","
+
+                })
 
       }
+
+      if ( this.errorMsg.slice(-1) == ',' ) {
+
+        this.displayMessage[cntl] = this.displayMessage[cntl].slice(0, -1)
+        this.errorMsg = this.errorMsg.slice(0,-1)
+
+      }
+
+      this.hasErrors =  ( this.loginForm.errors == null) ? false : true
 
   }
 
@@ -131,11 +145,23 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
       this.setValidationMessage('dobDay')
 
+      if ( this.loginForm.get('dobDay').errors == null) {
+
+        this.dobDay = this.loginForm.get('dobDay').value
+
+      }
+
     })
 
     this.loginForm.get('dobYear').valueChanges.debounceTime(400).subscribe( value => {
 
       this.setValidationMessage('dobYear')
+
+      if ( this.loginForm.get('dobYear').errors == null) {
+
+        this.dobYear = this.loginForm.get('dobYear').value
+
+      }
 
     })
 
@@ -143,6 +169,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
         console.log(value)
         this.setValidationMessage('dobMonth')
+
+        if ( this.loginForm.get('dobMonth').errors == null) {
+
+          this.dobMonth = this.loginForm.get('dobMonth').value
+
+        }
 
         let days: number = 31;
 
@@ -190,7 +222,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.welcomeMessage = this.q.getString("Welcome");
     this.beginMsg       = this.q.getString("Before we begin please help us verify your identity."    );
     this.startMsg       = this.q.getString("Start Survey");
+
     if (this.hasErrors == true) {
+
       this.errorMsg       = this.q.getString("Server error, please try later")
 
     }
